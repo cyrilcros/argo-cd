@@ -19,7 +19,7 @@ Argo CD applications, projects and settings can be defined declaratively using K
 The Application CRD is the Kubernetes resource object representing a deployed application instance
 in an environment. It is defined by two key pieces of information:
 
-* `source` reference to the desired state in Git (repository, revision, path, environment)
+* `source` reference to the desired state in Git (repository, revision, path, environment).
 * `destination` reference to the target cluster and namespace.
 
 A minimal Application spec is as follows:
@@ -44,7 +44,8 @@ spec:
 See [application.yaml](application.yaml) for additional fields
 
 !!! note
-    The namespace must match the namespace of your Argo cd, typically this is `argocd`.
+    The namespace in `metadata` must match the namespace of your Argo cd, typically this is `argocd`.
+    The root path of a repository is '.'.
 
 !!! warning
     By default, deleting an application will not perform a cascade delete, thereby deleting its resources. You must add the finalizer if you want this behaviour - which you may well not want.
@@ -61,6 +62,10 @@ You can create an app that creates other apps, which in turn can create other ap
 This allows you to declaratively manage a group of app that can be deployed and configured in concert.
 
 See [cluster bootstrapping](cluster-bootstrapping.md).
+
+!!! note
+    The parent app should use the namespace where argocd is installed as both the `metadata` and 
+    `destination` namespaces, the children app can use any namespace as `destination`.
 
 ## Projects
 
